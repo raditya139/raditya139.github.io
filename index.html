@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Mobile</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding-bottom: 60px;
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+    }
+    .content {
+      padding: 20px;
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .profile-section {
+      display: flex;
+      align-items: center;
+      background-color: #ffffff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    .profile-photo {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 2px solid #007bff;
+    }
+    .profile-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .profile-info {
+      margin-left: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+    .profile-info h3 { margin: 0; font-size: 18px; color: #007bff; }
+    .profile-info p { margin: 4px 0; font-size: 14px; color: #555; }
+    .profile-info .saldo { margin-top: 8px; font-weight: bold; color: #2a9d8f; }
+    .mobile-nav {
+      position: fixed;
+      bottom: 0; left: 0; right: 0; height: 60px;
+      background-color: #ffffff;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-top: 1px solid #ccc;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+      z-index: 1000;
+    }
+    .mobile-nav a {
+      text-decoration: none;
+      color: #333;
+      font-size: 14px;
+      flex: 1;
+      text-align: center;
+      padding: 10px 0;
+    }
+    .mobile-nav a.active { color: #007bff; font-weight: bold; }
+    .mobile-nav a:hover { background-color: #f0f0f0; }
+    @media (max-width: 480px) {
+      .profile-section { flex-direction: column; align-items: center; text-align: center; }
+      .profile-info { margin-left: 0; margin-top: 10px; }
+    }
+    .portfolio-box {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    .portfolio-box h2, .portfolio-box h3 { font-size: 18px; margin-bottom: 10px; }
+    .flex {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 15px;
+    }
+    .chart-box { flex: 1; }
+    .highlight-value {
+      margin-top: 20px;
+      padding: 10px;
+      text-align: center;
+      background: #ffeaa7;
+      border-radius: 10px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .timestamp {
+      text-align: right;
+      font-size: 12px;
+      color: #777;
+    }
+    canvas { width: 100% !important; height: 100px !important; }
+    /* Investasi Form */
+    .form-group { margin-bottom: 16px; }
+    .plan-radio-group { margin-top: 10px; }
+    .plan-radio-group label { margin-right: 16px; }
+    button[type="submit"] {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button[type="submit"]:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <!-- Dashboard -->
+    <div id="dashboard" class="tab-content active">
+      <h2>Dashboard</h2>
+      <div class="profile-section">
+        <div class="profile-photo">
+          <img src="image" alt="Foto Profil">
+        </div>
+        <div class="profile-info">
+          <h3>Nama Pengguna</h3>
+          <p>User ID: 123456</p>
+          <p>Email: user@email.com</p>
+          <p class="saldo">Saldo: Rp500.000</p>
+        </div>
+      </div>
+      <div class="portfolio-box">
+        <h2>📊 Portofolio</h2>
+        <p>Plan: <strong>Bronze</strong> <span style="float:right; color:#888;">⏱️ 02:59:00</span></p>
+        <p>Jumlah Deposit: <strong>Rp500.000</strong></p>
+        <div class="flex">
+          <div class="chart-box">
+            <strong>Growth: 0,001234 BTC</strong>
+            <canvas id="growthChart"></canvas>
+          </div>
+          <div class="chart-box">
+            <strong>Loss: 0,00 BTC</strong>
+            <canvas id="lossChart"></canvas>
+          </div>
+        </div>
+        <p>Current Balance: <strong>0,00338829 BTC</strong></p>
+        <p>Estimasi Akhir: <strong>0,003993 BTC</strong></p>
+        <div class="highlight-value">Rp21.000.000</div>
+      </div>
+    </div>
+
+    <!-- Investasi -->
+    <div id="investasi" class="tab-content">
+      <h2>Investasi</h2>
+      <div class="portfolio-box">
+        <h3>Investasi yang Sedang Berjalan</h3>
+        <p>Plan: Bronze</p>
+        <p>Jumlah Deposit: Rp500.000</p>
+        <p>Hasil: Rp7.000.000</p>
+      </div>
+      <div class="portfolio-box">
+        <h3>Deposit</h3>
+        <form id="deposit" action="">
+          <div class="form-group">
+            <label for="plan">Pilih Plan:</label>
+            <select id="plan" name="plan">
+              <option value="bronze">Bronze</option>
+              <option value="silver">Silver</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Jumlah:</label>
+            <div class="plan-radio-group" id="bronze">
+              <input type="radio" name="jumlah" value="Rp500.000" id="bronze-500k">
+              <label for="bronze-500k">Rp500.000</label>
+            </div>
+            <div class="plan-radio-group" id="silver" style="display:none;">
+              <input type="radio" name="jumlah" value="Rp4.500.000" id="silver-4500k">
+              <label for="silver-4500k">Rp4.500.000</label>
+            </div>
+          </div>
+          <button type="submit">Deposit</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Wallet -->
+    <div id="wallet" class="tab-content">
+      <h2>Wallet</h2>
+      <p>Cek saldo, riwayat transaksi, dan lakukan top-up.</p>
+    </div>
+
+    <!-- Setting -->
+    <div id="setting" class="tab-content">
+      <h2>Setting</h2>
+      <p>Ubah preferensi akun, keamanan, dan notifikasi.</p>
+    </div>
+
+    <!-- Logout -->
+    <div id="logout" class="tab-content">
+      <h2>Logout</h2>
+      <p>Kamu telah keluar dari akun. Sampai jumpa lagi!</p>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="mobile-nav">
+    <a href="#dashboard" class="active" onclick="showTab(event, 'dashboard')">Dashboard</a>
+    <a href="#investasi" onclick="showTab(event, 'investasi')">Investasi</a>
+    <a href="#wallet" onclick="showTab(event, 'wallet')">Wallet</a>
+    <a href="#setting" onclick="showTab(event, 'setting')">Setting</a>
+    <a href="#logout" onclick="showTab(event, 'logout')">Logout</a>
+  </nav>
+
+  <script>
+    // Tab Navigation
+    function showTab(event, tabId) {
+      event.preventDefault();
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      document.querySelectorAll('.mobile-nav a').forEach(link => link.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+    }
+
+    // Chart Data
+    const growthData = [0.0005, 0.0007, 0.0009, 0.0011, 0.0012, 0.00123, 0.001234];
+    const lossData = [0, 0, 0, 0, 0, 0, 0];
+    const labels = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
+
+    // Growth Chart
+    if (document.getElementById('growthChart')) {
+      new Chart(document.getElementById('growthChart'), {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Growth',
+            data: growthData,
+            borderColor: 'green',
+            backgroundColor: 'rgba(0, 255, 0, 0.1)',
+            tension: 0.3,
+            fill: true,
+            pointRadius: 0
+          }]
+        },
+        options: {
+          plugins: { legend: { display: false } },
+          scales: { y: { display: false }, x: { display: false } }
+        }
+      });
+    }
+
+    // Loss Chart
+    if (document.getElementById('lossChart')) {
+      new Chart(document.getElementById('lossChart'), {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Loss',
+            data: lossData,
+            borderColor: 'red',
+            backgroundColor: 'rgba(255, 0, 0, 0.1)',
+            tension: 0.3,
+            fill: true,
+            pointRadius: 0
+          }]
+        },
+        options: {
+          plugins: { legend: { display: false } },
+          scales: { y: { display: false }, x: { display: false } }
+        }
+      });
+    }
+
+    // Investasi Plan Switching
+    document.addEventListener('DOMContentLoaded', function() {
+      var planSelect = document.getElementById('plan');
+      var bronzeDiv = document.getElementById('bronze');
+      var silverDiv = document.getElementById('silver');
+
+      if (planSelect) {
+        planSelect.addEventListener('change', function() {
+          if (this.value === 'bronze') {
+            bronzeDiv.style.display = 'block';
+            silverDiv.style.display = 'none';
+          } else {
+            bronzeDiv.style.display = 'none';
+            silverDiv.style.display = 'block';
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

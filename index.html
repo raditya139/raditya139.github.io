@@ -12,9 +12,7 @@
       font-family: Arial, sans-serif;
       background-color: #f5f5f5;
     }
-    .content {
-      padding: 20px;
-    }
+    .content { padding: 20px; }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
     .profile-section {
@@ -102,10 +100,15 @@
       color: #777;
     }
     canvas { width: 100% !important; height: 100px !important; }
-    /* Investasi Form */
     .form-group { margin-bottom: 16px; }
-    .plan-radio-group { margin-top: 10px; }
-    .plan-radio-group label { margin-right: 16px; }
+    .plan-radio-group { margin-top: 10px; margin-bottom: 10px; }
+    .plan-radio-group label {
+      margin-right: 20px;
+      margin-bottom: 8px;
+      display: inline-block;
+      cursor: pointer;
+    }
+    .plan-radio-group input[type=radio] { margin-right: 4px; }
     button[type="submit"] {
       background: #007bff;
       color: white;
@@ -174,17 +177,47 @@
             <select id="plan" name="plan">
               <option value="bronze">Bronze</option>
               <option value="silver">Silver</option>
+              <option value="gold">Gold</option>
             </select>
           </div>
           <div class="form-group">
             <label>Jumlah:</label>
+            <!-- Bronze -->
             <div class="plan-radio-group" id="bronze">
               <input type="radio" name="jumlah" value="Rp500.000" id="bronze-500k">
               <label for="bronze-500k">Rp500.000</label>
+              <input type="radio" name="jumlah" value="Rp1.000.000" id="bronze-1jt">
+              <label for="bronze-1jt">Rp1.000.000</label>
+              <input type="radio" name="jumlah" value="Rp1.500.000" id="bronze-1-5jt">
+              <label for="bronze-1-5jt">Rp1.500.000</label>
+              <input type="radio" name="jumlah" value="Rp2.000.000" id="bronze-2jt">
+              <label for="bronze-2jt">Rp2.000.000</label>
+              <input type="radio" name="jumlah" value="Rp2.500.000" id="bronze-2-5jt">
+              <label for="bronze-2-5jt">Rp2.500.000</label>
             </div>
+            <!-- Silver -->
             <div class="plan-radio-group" id="silver" style="display:none;">
-              <input type="radio" name="jumlah" value="Rp4.500.000" id="silver-4500k">
-              <label for="silver-4500k">Rp4.500.000</label>
+              <input type="radio" name="jumlah" value="Rp3.000.000" id="silver-3jt">
+              <label for="silver-3jt">Rp3.000.000</label>
+              <input type="radio" name="jumlah" value="Rp3.500.000" id="silver-3-5jt">
+              <label for="silver-3-5jt">Rp3.500.000</label>
+              <input type="radio" name="jumlah" value="Rp4.000.000" id="silver-4jt">
+              <label for="silver-4jt">Rp4.000.000</label>
+              <input type="radio" name="jumlah" value="Rp4.500.000" id="silver-4-5jt">
+              <label for="silver-4-5jt">Rp4.500.000</label>
+            </div>
+            <!-- Gold -->
+            <div class="plan-radio-group" id="gold" style="display:none;">
+              <input type="radio" name="jumlah" value="Rp5.000.000" id="gold-5jt">
+              <label for="gold-5jt">Rp5.000.000</label>
+              <input type="radio" name="jumlah" value="Rp6.000.000" id="gold-6jt">
+              <label for="gold-6jt">Rp6.000.000</label>
+              <input type="radio" name="jumlah" value="Rp7.000.000" id="gold-7jt">
+              <label for="gold-7jt">Rp7.000.000</label>
+              <input type="radio" name="jumlah" value="Rp8.000.000" id="gold-8jt">
+              <label for="gold-8jt">Rp8.000.000</label>
+              <input type="radio" name="jumlah" value="Rp9.000.000" id="gold-9jt">
+              <label for="gold-9jt">Rp9.000.000</label>
             </div>
           </div>
           <button type="submit">Deposit</button>
@@ -286,16 +319,13 @@
       var planSelect = document.getElementById('plan');
       var bronzeDiv = document.getElementById('bronze');
       var silverDiv = document.getElementById('silver');
+      var goldDiv = document.getElementById('gold');
 
       if (planSelect) {
         planSelect.addEventListener('change', function() {
-          if (this.value === 'bronze') {
-            bronzeDiv.style.display = 'block';
-            silverDiv.style.display = 'none';
-          } else {
-            bronzeDiv.style.display = 'none';
-            silverDiv.style.display = 'block';
-          }
+          bronzeDiv.style.display = this.value === 'bronze' ? 'block' : 'none';
+          silverDiv.style.display = this.value === 'silver' ? 'block' : 'none';
+          goldDiv.style.display   = this.value === 'gold'   ? 'block' : 'none';
         });
       }
     });

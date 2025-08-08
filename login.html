@@ -1,21 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
   <title>Login</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-container {
+      background-color: white;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 350px;
+    }
+
+    .login-container h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    .login-container input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    .login-container button {
+      width: 100%;
+      padding: 12px;
+      background-color: #2575fc;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .login-container button:hover {
+      background-color: #1a5ed9;
+    }
+
+    @media (max-width: 400px) {
+      .login-container {
+        padding: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h2>Login</h2>
-  <form id="loginForm">
-    <input type="text" id="userID" placeholder="User ID" required><br><br>
-    <input type="password" id="pass" placeholder="Password" required><br><br>
-    <button type="submit">Login</button>
-  </form>
+
+  <div class="login-container">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <input type="text" id="userID" placeholder="User ID" required>
+      <input type="password" id="pass" placeholder="Password" required>
+      <button type="submit">Login</button>
+    </form>
+  </div>
 
   <script>
     const sheetURL = 'https://opensheet.elk.sh/13DmMCnOOboYfbo3hx1ubukNcQd2jkcHbNlelsB-wIQc/Sheet1';
 
     document.getElementById('loginForm').addEventListener('submit', async function(e) {
-      e.preventDefault(); // Mencegah form submit default
+      e.preventDefault();
 
       const userID = document.getElementById('userID').value.trim();
       const pass = document.getElementById('pass').value.trim();
@@ -27,10 +90,7 @@
         const user = data.find(u => u.userID === userID && u.pass === pass);
 
         if (user) {
-          // Simpan data user ke localStorage (opsional)
           localStorage.setItem('loggedInUser', JSON.stringify(user));
-
-          // Redirect ke path lokal (hanya berfungsi di TrebEdit atau file browser)
           window.location.href = '/index.html';
         } else {
           alert('Login gagal! Periksa userID dan password.');

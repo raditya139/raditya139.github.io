@@ -1,0 +1,24 @@
+<h1>Wallet</h1>
+<div id="wallet-info"></div>
+
+<script>
+  const userID = localStorage.getItem('userID');
+
+  fetch('https:                                                                        
+    .then(response => response.json())
+    .then(data => {
+      const user = data.find((user) => user.userID === userID);
+      if (user) {
+        const walletInfoHtml = `
+          <p>Saldo Utama: ${user.saldoUtama}</p>
+          <p>Saldo Investment: ${user.saldoInvestment}</p>
+          <p>Bank: ${user.bank}</p>
+          <p>Nomor Rekening: ${user.nomorRekening}</p>
+        `;
+        document.getElementById('wallet-info').innerHTML = walletInfoHtml;
+      } else {
+        window.location.href = '/login.html';
+      }
+    })
+    .catch(error => console.error(error));
+</script>

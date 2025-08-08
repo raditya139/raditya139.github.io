@@ -1,0 +1,44 @@
+<form id="signup-form">
+  <label for="userID">User ID:</label>
+  <input type="text" id="userID" name="userID" required>
+  <br><br>
+  <label for="pass">Password:</label>
+  <input type="password" id="pass" name="pass" required>
+  <br><br>
+  <label for="nama">Nama:</label>
+  <input type="text" id="nama" name="nama" required>
+  <br><br>
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" required>
+  <br><br>
+  <button type="submit">Signup</button>
+</form>
+
+<div id="result"></div>
+
+<script>
+  const signupForm = document.getElementById('signup-form');
+
+  signupForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const userID = document.getElementById('userID').value;
+    const pass = document.getElementById('pass').value;
+    const nama = document.getElementById('nama').value;
+    const email = document.getElementById('email').value;
+
+    // Simpan data user baru ke spreadsheet
+    fetch('https://opensheet.elk.sh/13DmMCnOOboYfbo3hx1ubukNcQd2jkcHbNlelsB-wIQc/Sheet1')
+      .then(response => response.json())
+      .then(data => {
+        const newUser = {
+          userID: userID,
+          pass: pass,
+          nama: nama,
+          email: email
+        };
+        // Tambahkan logika untuk menyimpan data user baru ke spreadsheet
+        console.log(newUser);
+      })
+      .catch(error => console.error(error));
+  });
+</script>

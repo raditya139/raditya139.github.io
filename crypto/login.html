@@ -1,1 +1,34 @@
-jdj
+<form id="login-form">
+  <label for="userID">User ID:</label>
+  <input type="text" id="userID" name="userID" required>
+  <br><br>
+  <label for="pass">Password:</label>
+  <input type="password" id="pass" name="pass" required>
+  <br><br>
+  <button type="submit">Login</button>
+</form>
+
+<div id="result"></div>
+
+<script>
+  const loginForm = document.getElementById('login-form');
+
+  loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const userID = document.getElementById('userID').value;
+    const pass = document.getElementById('pass').value;
+
+    fetch('https:                                                                        
+      .then(response => response.json())
+      .then(data => {
+        const user = data.find((user) => user.userID === userID && user.pass === pass);
+        if (user) {
+          localStorage.setItem('userID', userID);
+          window.location.href = '/crypto/index.html';
+        } else {
+          document.getElementById('result').innerHTML = 'User ID atau password salah';
+        }
+      })
+      .catch(error => console.error(error));
+  });
+</script>

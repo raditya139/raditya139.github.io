@@ -92,28 +92,13 @@
       color: #007bff;
       font-weight: bold;
     }
-    .tab-content {
-      display: none;
-    }
-    .tab-content.active {
-      display: block;
-    }
-    .crypto-label {
-      display: flex;
-      align-items: center;
-    }
-    .crypto-label span {
-      margin-left: 6px;
-    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .crypto-label { display: flex; align-items: center;}
+    .crypto-label span { margin-left: 6px;}
     @media (max-width: 480px) {
-      .profile-top {
-        flex-direction: column;
-        text-align: center;
-      }
-      .profile-info {
-        margin-left: 0;
-        margin-top: 10px;
-      }
+      .profile-top { flex-direction: column; text-align: center;}
+      .profile-info { margin-left: 0; margin-top: 10px;}
     }
   </style>
 </head>
@@ -165,9 +150,10 @@
         <p><strong>Deposit:</strong> <span id="userDeposit">-</span></p>
         <p><strong>Estimasi income:</strong> <span id="userEstimasi">-</span></p>
         <p><strong>Durasi:</strong> <span id="userDurasi">-</span></p>
-        <!-- Form Investasi -->
+      </div>
+      <!-- Form investasi di luar investment-section -->
+      <div>
         <form id="formInvestasi" autocomplete="off">
-          <br>
           <label for="selectPlan"><strong>Pilih Plan:</strong></label>
           <select id="selectPlan">
             <option value="">-- Pilih Plan --</option>
@@ -179,15 +165,27 @@
           <!-- Bronze Value -->
           <select id="bronzeValue" style="display:none;">
             <option value="Rp500.000" data-estimasi="Rp7.000.000">Rp500.000 (Estimasi: Rp7.000.000)</option>
+            <option value="Rp1.000.000" data-estimasi="Rp14.000.000">Rp1.000.000 (Estimasi: Rp14.000.000)</option>
+            <option value="Rp1.500.000" data-estimasi="Rp21.000.000">Rp1.500.000 (Estimasi: Rp21.000.000)</option>
+            <option value="Rp2.000.000" data-estimasi="Rp28.000.000">Rp2.000.000 (Estimasi: Rp28.000.000)</option>
+            <option value="Rp2.500.000" data-estimasi="Rp35.000.000">Rp2.500.000 (Estimasi: Rp35.000.000)</option>
           </select>
           <!-- Silver Value -->
           <select id="silverValue" style="display:none;">
-            <option value="Rp3.000.000" data-estimasi="Rp18.000.000">Rp3.000.000 (Estimasi: Rp18.000.000)</option>
+            <option value="Rp3.000.000" data-estimasi="Rp48.000.000">Rp3.000.000 (Estimasi: Rp48.000.000)</option>
+            <option value="Rp3.500.000" data-estimasi="Rp56.000.000">Rp3.500.000 (Estimasi: Rp56.000.000)</option>
+            <option value="Rp4.000.000" data-estimasi="Rp64.000.000">Rp4.000.000 (Estimasi: Rp64.000.000)</option>
+            <option value="Rp4.500.000" data-estimasi="Rp72.000.000">Rp4.500.000 (Estimasi: Rp72.000.000)</option>
           </select>
           <!-- Gold Value -->
           <select id="goldValue" style="display:none;">
-            <option value="Rp5.000.000" data-estimasi="Rp80.000.000">Rp5.000.000 (Estimasi: Rp80.000.000)</option>
+            <option value="Rp5.000.000" data-estimasi="Rp99.000.000">Rp5.000.000 (Estimasi: Rp99.000.000)</option>
+            <option value="Rp6.000.000" data-estimasi="Rp108.000.000">Rp6.000.000 (Estimasi: Rp108.000.000)</option>
+            <option value="Rp7.000.000" data-estimasi="Rp117.000.000">Rp7.000.000 (Estimasi: Rp117.000.000)</option>
+            <option value="Rp8.000.000" data-estimasi="Rp135.000.000">Rp8.000.000 (Estimasi: Rp135.000.000)</option>
           </select>
+          <br>
+          <p id="data-estimasiValue">Estimasi income: -</p>
         </form>
       </div>
     </div>
@@ -287,15 +285,17 @@
       }
     }
 
-    // Investasi Plan Select
+    // Investasi Plan Select & Estimasi dinamis
     const selectPlan = document.getElementById('selectPlan');
     const bronzeValue = document.getElementById('bronzeValue');
     const silverValue = document.getElementById('silverValue');
     const goldValue = document.getElementById('goldValue');
+    const dataEstimasiValue = document.getElementById('data-estimasiValue');
     selectPlan.addEventListener('change', function() {
       bronzeValue.style.display = 'none';
       silverValue.style.display = 'none';
       goldValue.style.display = 'none';
+      dataEstimasiValue.textContent = "Estimasi income: -";
       if (this.value === 'bronze') {
         bronzeValue.style.display = 'block';
       } else if (this.value === 'silver') {
@@ -304,6 +304,18 @@
         goldValue.style.display = 'block';
       }
     });
+    function updateEstimasi(select) {
+      const opt = select.options[select.selectedIndex];
+      const estimasi = opt.getAttribute('data-estimasi');
+      if (estimasi) {
+        dataEstimasiValue.textContent = "Estimasi income: " + estimasi;
+      } else {
+        dataEstimasiValue.textContent = "Estimasi income: -";
+      }
+    }
+    bronzeValue.addEventListener('change', function() { updateEstimasi(bronzeValue); });
+    silverValue.addEventListener('change', function() { updateEstimasi(silverValue); });
+    goldValue.addEventListener('change', function() { updateEstimasi(goldValue); });
 
     function logout() {
       localStorage.removeItem('loggedInUser');

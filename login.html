@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+</head>
+<body>
+  <h2>Login</h2>
+  <form id="loginForm">
+    <input type="text" id="userID" placeholder="User ID" required><br><br>
+    <input type="password" id="pass" placeholder="Password" required><br><br>
+    <button type="submit">Login</button>
+  </form>
+
+  <script>
+    const sheetURL = 'https://opensheet.elk.sh/13DmMCnOOboYfbo3hx1ubukNcQd2jkcHbNlelsB-wIQc/Sheet1';
+
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault(); // Mencegah form submit default
+
+      const userID = document.getElementById('userID').value.trim();
+      const pass = document.getElementById('pass').value.trim();
+
+      try {
+        const res = await fetch(sheetURL);
+        const data = await res.json();
+
+        const user = data.find(u => u.userID === userID && u.pass === pass);
+
+        if (user) {
+          // Simpan data user ke localStorage (opsional)
+          localStorage.setItem('loggedInUser', JSON.stringify(user));
+
+          // Redirect ke path lokal (hanya berfungsi di TrebEdit atau file browser)
+          window.location.href = '/dasboard.html';
+        } else {
+          alert('Login gagal! Periksa userID dan password.');
+        }
+      } catch (err) {
+        console.error('Gagal fetch:', err);
+        alert('Terjadi kesalahan saat login.');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<h1>Selamat Datang!</h1>
+<div id="user-profile"></div>
+
+<script>
+  const userID = localStorage.getItem('userID');
+
+  fetch('https:                                                                        
+    .then(response => response.json())
+    .then(data => {
+      const user = data.find((user) => user.userID === userID);
+      if (user) {
+        const userProfileHtml = `
+          <p>Nama: ${user.nama}</p>
+          <p>Email: ${user.email}</p>
+        `;
+        document.getElementById('user-profile').innerHTML = userProfileHtml;
+      } else {
+        window.location.href = '/login.html';
+      }
+    })
+    .catch(error => console.error(error));
+</script>
